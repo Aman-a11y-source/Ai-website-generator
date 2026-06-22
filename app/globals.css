@@ -1,0 +1,173 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-sans);
+  --font-serif: var(--font-serif);
+  
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  
+  /* Modern clean animations */
+  --animate-text-reveal: text-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-fade-in-up: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-watermark-float: watermark-float 20s ease-in-out infinite;
+}
+
+@keyframes text-reveal {
+  0% { opacity: 0; transform: translateY(30px); filter: blur(4px); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@keyframes fade-in-up {
+  0% { opacity: 0; transform: translateY(15px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes watermark-float {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-12px) rotate(1deg); }
+}
+
+:root {
+  --background: oklch(0.98 0.006 85); /* #FAF9F5 */
+  --foreground: oklch(0.16 0.01 85);   /* #1C1C1A */
+  --card: oklch(1 0 0);               /* #FFFFFF */
+  --card-foreground: oklch(0.16 0.01 85);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0.01 85);
+  --primary: oklch(0.32 0.08 160);    /* #0E5E4E - Elegant Forest Emerald */
+  --primary-foreground: oklch(0.99 0.005 85);
+  --secondary: oklch(0.94 0.01 85);   /* #F0EDE5 */
+  --secondary-foreground: oklch(0.16 0.01 85);
+  --muted: oklch(0.96 0.008 85);      /* #F4F3ED */
+  --muted-foreground: oklch(0.50 0.01 85); /* #75746E */
+  --accent: oklch(0.92 0.02 160);     /* Soft Mint Cream */
+  --accent-foreground: oklch(0.32 0.08 160);
+  --destructive: oklch(0.55 0.18 28);
+  --border: oklch(0.91 0.01 85);      /* #E6E5DF */
+  --input: oklch(0.94 0.01 85);
+  --ring: oklch(0.32 0.08 160);
+  --radius: 0.85rem;
+}
+
+.dark {
+  --background: oklch(0.14 0.005 85);
+  --foreground: oklch(0.98 0.006 85);
+  --card: oklch(0.18 0.005 85);
+  --card-foreground: oklch(0.98 0.006 85);
+  --popover: oklch(0.18 0.005 85);
+  --popover-foreground: oklch(0.98 0.006 85);
+  --primary: oklch(0.65 0.12 160);
+  --primary-foreground: oklch(0.14 0.005 85);
+  --secondary: oklch(0.20 0.005 85);
+  --secondary-foreground: oklch(0.98 0.006 85);
+  --muted: oklch(0.17 0.005 85);
+  --muted-foreground: oklch(0.55 0.006 85);
+  --accent: oklch(0.22 0.03 160);
+  --accent-foreground: oklch(0.65 0.12 160);
+  --destructive: oklch(0.55 0.18 28);
+  --border: oklch(0.24 0.005 85);
+  --input: oklch(0.20 0.005 85);
+  --ring: oklch(0.65 0.12 160);
+  --radius: 0.85rem;
+}
+
+@layer base {
+  * {
+    @apply border-border/80 outline-ring/40 transition-colors duration-200 ease-out;
+  }
+  body {
+    @apply bg-background text-foreground overflow-x-hidden;
+  }
+  html {
+    @apply font-heading antialiased;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading tracking-tight text-foreground/95;
+  }
+}
+
+/* Elegant Text outline watermark */
+.watermark-text {
+  font-size: 16vw;
+  font-weight: 900;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(28, 28, 26, 0.035);
+  user-select: none;
+  pointer-events: none;
+  letter-spacing: 0.05em;
+  font-family: var(--font-sans);
+}
+
+/* Premium clean scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0.85 0.01 85);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.70 0.01 85);
+}
+
+/* Clerk Pricing Table and Checkout Overlays */
+.cl-drawerRoot,
+.cl-drawerBackdrop,
+.cl-drawerContent {
+  z-index: 99999 !important;
+}
+
+.dark .cl-pricingTableCardFeaturesListItem svg {
+  stroke: #C5E3C6 !important;
+  color: #C5E3C6 !important;
+}
+
+.dark .cl-badge {
+  color: #FAF9F5 !important;
+  background-color: #292524 !important;
+}
+
+.dark .cl-pricingTableCardPeriodToggle {
+  color: #FAF9F5 !important;
+}
+
+.dark .cl-pricingTableCardFooterNotice {
+  color: #A3A39E !important;
+}
+
