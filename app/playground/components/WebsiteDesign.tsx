@@ -6,6 +6,7 @@ import { OnSaveContext } from '@/context/OnSaveContext'
 import { toast } from 'sonner'
 import axios from 'axios'
 import { useParams, useSearchParams } from 'next/navigation'
+import { useIsMobile } from '@/hooks/use-mobile'
 
 type prop = {
     generatedCode: string
@@ -24,6 +25,7 @@ function WebsiteDesign({ generatedCode }: prop) {
     const {onSaveData,setOnSaveData}=useContext(OnSaveContext);
     const {projectId}=useParams();
     const params=useSearchParams();
+    const isMobile = useIsMobile();
     const frameId=params.get("frameId");
     const iframeRef = React.useRef<HTMLIFrameElement>(null);
 
@@ -223,8 +225,8 @@ function WebsiteDesign({ generatedCode }: prop) {
     }
 
     return (
-        <div className='flex h-full overflow-hidden bg-background'>
-            <div className="flex-1 h-full flex flex-col p-4 pb-6">
+        <div className={isMobile ? 'flex flex-col h-auto bg-background' : 'flex h-full overflow-hidden bg-background'}>
+            <div className={isMobile ? 'w-full h-[calc(100vh-56px)] flex flex-col p-4' : 'flex-1 h-full flex flex-col p-4 pb-6'}>
                 <div 
                     className="flex-1 flex items-center justify-center overflow-hidden min-h-0 border border-border rounded-t-xl bg-card shadow-sm relative"
                 >
@@ -247,38 +249,42 @@ function WebsiteDesign({ generatedCode }: prop) {
             </div>
 
             {/* Settings Resizer */}
-            <div 
-                className="h-full flex-shrink-0 relative z-50 hover:bg-primary/20 transition-colors"
-                style={{ cursor: 'col-resize', width: '6px', minWidth: '6px', backgroundColor: 'var(--border)' }}
-                onMouseDown={(e) => {
-                    e.preventDefault();
-                    const startX = e.clientX;
-                    const startWidth = settingsWidth;
-                    const onMouseMove = (moveEvent: MouseEvent) => {
-                        const newWidth = startWidth - (moveEvent.clientX - startX);
-                        setSettingsWidth(Math.max(250, Math.min(600, newWidth)));
-                    };
-                    const onMouseUp = () => {
-                        document.removeEventListener('mousemove', onMouseMove);
-                        document.removeEventListener('mouseup', onMouseUp);
-                    };
-                    document.addEventListener('mousemove', onMouseMove);
-                    document.addEventListener('mouseup', onMouseUp);
-                }}
-            />
+            {!isMobile && (
+                <div 
+                    className="h-full flex-shrink-0 relative z-50 hover:bg-primary/20 transition-colors"
+                    style={{ cursor: 'col-resize', width: '6px', minWidth: '6px', backgroundColor: 'var(--border)' }}
+                    onMouseDown={(e) => {
+                        e.preventDefault();
+                        const startX = e.clientX;
+                        const startWidth = settingsWidth;
+                        const onMouseMove = (moveEvent: MouseEvent) => {
+                            const newWidth = startWidth - (moveEvent.clientX - startX);
+                            setSettingsWidth(Math.max(250, Math.min(600, newWidth)));
+                        };
+                        const onMouseUp = () => {
+                            document.removeEventListener('mousemove', onMouseMove);
+                            document.removeEventListener('mouseup', onMouseUp);
+                        };
+                        document.addEventListener('mousemove', onMouseMove);
+                        document.addEventListener('mouseup', onMouseUp);
+                    }}
+                />
+            )}
 
             {/* Settings Section */}
-            <div 
-                style={{ width: settingsWidth }} 
-                className="shrink-0 h-full overflow-y-auto bg-card border-l border-border shadow-sm"
-            >
-                {selectedEl?.tagName === 'IMG' ? (
-                    // @ts-ignore
-                    <ImageSettingSection selectedEl={selectedEl} />
-                ) : selectedEl ? (
-                    <ElementSettingSection selectedEl={selectedEl} clearSelection={() => setSelectedEl(null)} />
-                ) : null}
-            </div>
+            {(selectedEl && (selectedEl?.tagName === 'IMG' || selectedEl)) && (
+                <div 
+                    style={isMobile ? { width: '100%', minHeight: '350px' } : { width: settingsWidth }} 
+                    className={isMobile ? "shrink-0 h-auto overflow-y-auto bg-card border-t border-border shadow-sm" : "shrink-0 h-full overflow-y-auto bg-card border-l border-border shadow-sm"}
+                >
+                    {selectedEl?.tagName === 'IMG' ? (
+                        // @ts-ignore
+                        <ImageSettingSection selectedEl={selectedEl} />
+                    ) : selectedEl ? (
+                        <ElementSettingSection selectedEl={selectedEl} clearSelection={() => setSelectedEl(null)} />
+                    ) : null}
+                </div>
+            )}
         </div>
     )
 }

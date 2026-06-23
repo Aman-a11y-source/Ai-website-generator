@@ -120,7 +120,7 @@ export default function WorkspaceLayout({
         }`}
       >
         <div className="flex items-center justify-between px-6 py-5.5 border-b border-border select-none">
-          <div className="flex items-center gap-2.5">
+          <Link href="/" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
             <svg className="w-7.5 h-7.5 text-primary" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="2" y="18" width="32" height="32" rx="8" stroke="currentColor" strokeWidth="3.5" />
               <rect x="12" y="10" width="32" height="32" rx="8" stroke="currentColor" strokeWidth="3.5" />
@@ -129,7 +129,7 @@ export default function WorkspaceLayout({
             <span className="text-lg font-bold tracking-[0.14em] text-foreground mt-0.5">
               KAIRO
             </span>
-          </div>
+          </Link>
           <button 
             onClick={() => setSidebarOpen(false)}
             className="md:hidden p-1.5 text-muted-foreground hover:text-foreground rounded-lg hover:bg-muted transition-colors cursor-pointer"

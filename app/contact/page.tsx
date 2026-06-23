@@ -82,15 +82,8 @@ export default function ContactPage() {
         className="relative z-10 flex-1 flex items-start justify-center px-6"
         style={{ paddingTop: "110px", paddingBottom: "64px" }}
       >
-        <div style={{ width: "100%", maxWidth: "960px", margin: "0 auto" }}>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1.4fr",
-              gap: "3rem",
-              alignItems: "start",
-            }}
-          >
+        <div className="w-full max-w-[960px] mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.4fr] gap-10 md:gap-12 items-start">
             <div>
               <h1
                 className="text-foreground tracking-tight leading-[1.1] mb-4"

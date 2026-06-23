@@ -28,7 +28,7 @@ function PlaygroundHeader({ theme = "light", setTheme }: PlaygroundHeaderProps) 
           {/* Logo */}
           <div
             className="flex items-center gap-2.5 select-none cursor-pointer group"
-            onClick={() => router.push(isSignedIn ? '/workspace' : '/')}
+            onClick={() => router.push('/')}
           >
               <svg
               className="w-6 h-6 text-[#2D7A31] transition-transform duration-300 group-hover:rotate-3"

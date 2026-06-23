@@ -11,6 +11,7 @@ import { toast } from 'sonner'
 import { useAuth } from "@clerk/nextjs";
 import { UserDetailContext } from "@/context/userDetailContext";
 import { useTheme } from '@/context/ThemeContext';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const SYSTEM_PROMPT = `userInput: {userInput}
 Instructions:
@@ -67,6 +68,7 @@ export default function Playground() {
     const [messages, setMessages] = useState<Messages[]>([]);
     const [generatedCode, setGeneratedCode] = useState<string>("");
     const { theme, setTheme } = useTheme();
+    const isMobile = useIsMobile();
     
     const router = useRouter();
     const { has, isSignedIn } = useAuth();
@@ -267,41 +269,43 @@ export default function Playground() {
     }
 
     return (
-        <div className={cn('h-[100dvh]', 'flex', 'flex-col', 'bg-background', 'font-sans', 'overflow-hidden')}>
+        <div className={cn(isMobile ? 'min-h-[100dvh]' : 'h-[100dvh]', 'flex', 'flex-col', 'bg-background', 'font-sans', isMobile ? 'overflow-y-auto' : 'overflow-hidden')}>
             <div className={cn('shrink-0', 'border-b', 'border-border')}>
                 <PlaygroundHeader theme={theme} setTheme={setTheme} />
             </div>
             
-            <div className={cn('flex-1', 'flex', 'flex-row', 'overflow-hidden', 'w-full', 'bg-background')}>
+            <div className={cn('flex-1', 'flex', isMobile ? 'flex-col' : 'flex-row', isMobile ? '' : 'overflow-hidden', 'w-full', 'bg-background')}>
                 <div 
-                    style={{ width: chatWidth }} 
-                    className={cn('shrink-0', 'border-r', 'border-border', 'overflow-y-auto', 'flex', 'flex-col', 'bg-card')}
+                    style={isMobile ? { width: '100%', height: 'calc(100vh - 56px)' } : { width: chatWidth }} 
+                    className={cn('shrink-0', isMobile ? 'border-b' : 'border-r', 'border-border', 'overflow-y-auto', 'flex', 'flex-col', 'bg-card')}
                 >
                     <ChatSection messages={messages ?? []} onSend={(input: string) => SendMessage(input)} loading={loading} />
                 </div>
 
                 {/* Left/Right Resizer bar */}
-                <div 
-                    className="h-full flex-shrink-0 relative z-50 -ml-[3px] hover:bg-primary/20 transition-colors"
-                    style={{ cursor: 'col-resize', width: '6px', minWidth: '6px', backgroundColor: 'var(--border)' }}
-                    onMouseDown={(e) => {
-                        e.preventDefault();
-                        const startX = e.clientX;
-                        const startWidth = chatWidth;
-                        const onMouseMove = (moveEvent: MouseEvent) => {
-                            const newWidth = startWidth + (moveEvent.clientX - startX);
-                            setChatWidth(Math.max(400, Math.min(800, newWidth)));
-                        };
-                        const onMouseUp = () => {
-                            document.removeEventListener('mousemove', onMouseMove);
-                            document.removeEventListener('mouseup', onMouseUp);
-                        };
-                        document.addEventListener('mousemove', onMouseMove);
-                        document.addEventListener('mouseup', onMouseUp);
-                    }}
-                />
+                {!isMobile && (
+                    <div 
+                        className="h-full flex-shrink-0 relative z-50 -ml-[3px] hover:bg-primary/20 transition-colors"
+                        style={{ cursor: 'col-resize', width: '6px', minWidth: '6px', backgroundColor: 'var(--border)' }}
+                        onMouseDown={(e) => {
+                            e.preventDefault();
+                            const startX = e.clientX;
+                            const startWidth = chatWidth;
+                            const onMouseMove = (moveEvent: MouseEvent) => {
+                                const newWidth = startWidth + (moveEvent.clientX - startX);
+                                setChatWidth(Math.max(400, Math.min(800, newWidth)));
+                            };
+                            const onMouseUp = () => {
+                                document.removeEventListener('mousemove', onMouseMove);
+                                document.removeEventListener('mouseup', onMouseUp);
+                            };
+                            document.addEventListener('mousemove', onMouseMove);
+                            document.addEventListener('mouseup', onMouseUp);
+                        }}
+                    />
+                )}
                 
-                <div className={cn('flex-1', 'overflow-hidden', 'relative', 'bg-background')}>
+                <div className={cn('flex-1', isMobile ? 'min-h-[100vh]' : 'overflow-hidden', 'relative', 'bg-background')}>
                     <WebsiteDesign generatedCode={generatedCode} />
                 </div>
             </div>

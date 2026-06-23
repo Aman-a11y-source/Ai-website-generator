@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { PricingTable } from '@clerk/nextjs';
 import Header from "../_components/header";
 import InteractiveGrid from "../_components/interactive-grid";
-
 import { useTheme } from "@/context/ThemeContext";
 
 export default function PublicPricing() {
@@ -55,6 +54,8 @@ export default function PublicPricing() {
             appearance={{
               elements: {
                 rootBox: "relative z-[99999]",
+                card: "rounded-none",
+                button: "rounded-none"
               },
               variables: {
                 colorPrimary: '#2D7A31', 
@@ -63,7 +64,7 @@ export default function PublicPricing() {
                 colorMutedForeground: theme === 'dark' ? '#A3A39E' : '#75746E',
                 colorSuccess: theme === 'dark' ? '#C5E3C6' : '#2D7A31',
                 colorBorder: theme === 'dark' ? '#2D2D2A' : '#E6E5DF',
-                borderRadius: '1.5rem',
+                borderRadius: '0px',
               }
             }}
           />

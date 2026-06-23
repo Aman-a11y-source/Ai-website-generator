@@ -40,7 +40,7 @@ export default function Header({ theme = "light", setTheme = () => {} }: HeaderP
         <div className="flex items-center justify-between w-full">
           <div className="flex-1 flex justify-start">
             <Link 
-              href={isSignedIn ? "/workspace" : "/"} 
+              href="/" 
               className="flex items-center gap-2.5 transition-transform duration-200 hover:scale-[1.01] select-none group"
             >
               <svg className="w-8 h-8 text-[#2D7A31] transition-transform duration-300 group-hover:rotate-3" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
