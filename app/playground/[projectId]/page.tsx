@@ -122,16 +122,6 @@ export default function Playground() {
                 router.push('/workspace/pricing');
                 return;
             }
-            try {
-                const response = await axios.put('/api/users');
-                if (response.data?.user) {
-                    setUserDetail(response.data.user);
-                }
-            } catch (err) {
-                console.error("Failed to deduct credits:", err);
-                toast.error("Credit deduction failed. Please try again.");
-                return;
-            }
         }
 
         setLoading(true);
@@ -233,6 +223,17 @@ export default function Playground() {
             ]);
         }
       
+        if (!hasUnlimitedCredit) {
+            try {
+                const response = await axios.put('/api/users');
+                if (response.data?.user) {
+                    setUserDetail(response.data.user);
+                }
+            } catch (err) {
+                console.error("Failed to deduct credits:", err);
+            }
+        }
+
         setLoading(false);
     }
 

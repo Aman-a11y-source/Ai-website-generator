@@ -2,7 +2,7 @@
 
 import React, { useContext } from 'react';
 import { OnSaveContext } from '@/context/OnSaveContext';
-import { ArrowLeft, Save } from 'lucide-react';
+import { Save } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { UserButton, useAuth } from '@clerk/nextjs';
 import AnimeThemeToggle from '@/app/_components/anime-toggle';
@@ -23,12 +23,12 @@ function PlaygroundHeader({ theme = "light", setTheme }: PlaygroundHeaderProps) 
       style={{ height: '56px' }}
     >
       <div className="flex items-center justify-between px-5 h-full">
-        {/* Left: Logo + Back to workspace */}
-        <div className="flex items-center gap-4">
+        {/* Left: Logo (redirects to workspace) */}
+        <div className="flex items-center">
           {/* Logo */}
           <div
-            className="flex items-center gap-2.5 select-none cursor-pointer group"
-            onClick={() => router.push('/')}
+            className="flex items-center gap-2 select-none cursor-pointer group"
+            onClick={() => router.push('/workspace')}
           >
               <svg
               className="w-6 h-6 text-[#2D7A31] transition-transform duration-300 group-hover:rotate-3"
@@ -44,18 +44,6 @@ function PlaygroundHeader({ theme = "light", setTheme }: PlaygroundHeaderProps) 
               KAIRO
             </span>
           </div>
-
-          {/* Separator */}
-          <div className="w-px h-5 bg-border" />
-
-          {/* Back button */}
-          <button
-            onClick={() => router.push('/workspace')}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground rounded-xl hover:bg-secondary transition-all duration-200 cursor-pointer"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            Workspace
-          </button>
         </div>
 
         {/* Right: Actions */}
